@@ -1,0 +1,48 @@
+#titlename{
+    font-family: "Book Antiqua";
+    text-align: center;
+}
+
+#intro-text{
+    text-align: center;
+    font-family: "Helvetica";
+}
+#form{
+    display: block;
+    text-align: center;
+}
+form{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#label {
+    font-family: Helvetica;
+}
+p{
+    font-family: Helvetica;
+}
+
+h3{
+    font-family: "Helvetica Medium";
+}
+
+#allarticles{
+    display: inline-block;
+    text-align: center;
+}
+
+.article{
+    border: solid;
+    width: 600px;
+    margin-bottom: 50px;
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.date{
+    font-size: 12px;
+}

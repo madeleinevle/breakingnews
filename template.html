@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>BreakingNews</title>
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+</head>
+<body>
+    <h1 id="titlename">BreakingNews</h1>
+    <p id="intro-text">The most recent and top articles from {{section}}.</p>
+    <div id="allarticles">
+    {% for article in articles %}
+            <div class="article">
+                <img class="thumbnail" src="{{article.thumbnail}}">
+                <h3 class="title">{{article.title}}</h3>
+                <p class="author">Written by {{article.author}}</p>
+                <p class="date">Updated at {{article.allupdated}}</p>
+                <p class="date">Published at {{article.allpublished}}</p>
+                <form action="{{article.url}}">
+                    <input type="submit" value="Go to Article">
+                </form>
+            </div>
+    {% endfor %}
+    </div>
+</body>
+</html>
