@@ -4,16 +4,18 @@ from urllib import urlencode
 import json, jinja2, os, webapp2
 import logging
 
-top_stories_api_key = "insert a key here"
+top_stories_api_key = "Add your code here"
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
                                         extensions=['jinja2.ext.autoescape'],
                                         autoescape=True)
 
+# Makes the JSON file pretty and readable
 def pretty(obj):
     return json.dumps(obj, sort_keys=True, indent=2)
 
-# This method calls the json file for the program
+
+# This method calls the API and returns the json file for the program
 def getSection(section, params={"api-key": top_stories_api_key}):
     try:
         baseurl = "https://api.nytimes.com/svc/topstories/v2/"
@@ -26,12 +28,9 @@ def getSection(section, params={"api-key": top_stories_api_key}):
     except:
         return "There is an error right here"
 
-#print(pretty(articles["results"][0]))
 
-# This method creates a dictionary of all the articles in the section
-
-# In the dictionary, there are titles, updated and created dates of the article, thumbnail of the article,
-# and the link to the article. The dictionary also changes
+# This method creates a dictionary of all the articles in the section. In the dictionary, there are titles, updated and
+# published dates of the article, thumbnail of the article, and the link to the article. The dictionary also changes
 def getDictionary(json_file):
     allArticles = {}
     for article in json_file["results"]:
@@ -66,9 +65,9 @@ def getDictionary(json_file):
 
     return allArticles
 
-# print(pretty(test))
 
-# This function takes the dictionary that has been previously created, sorts based on published dates and returns a list
+# This method takes the dictionary that has been previously created, sorts based on published dates and returns a list
+# of articles
 def sortDatesPublishedDates(dictionary):
     # Make a list of tuples that has the different types of dates
     # Sort by the year
@@ -84,7 +83,6 @@ def sortDatesPublishedDates(dictionary):
     return sortedList
 
 
-# print(pretty(test2))
 # This function takes the dictionary that has been previously created, sorts based on published dates and returns a list
 def sortDatesUpdatedDates(dictionary):
     newlist = []
@@ -96,9 +94,8 @@ def sortDatesUpdatedDates(dictionary):
     reverse=True)
     return sortedList
 
-# test3 = sortDatesUpdatedDates(test)
-# print(test3)
-#
+
+# This class takes the information from each dictionary in the list and returns a formatted string
 class article():
     def __init__(self, article):
         self.author = article["author"]
@@ -130,28 +127,8 @@ class article():
     def __str__(self):
         return self.title + "\n" + self.author + "\nUpdated: " + self.allupdated + "\nPublished: " + self.allpublished
 
-# section = request.get(section)
-# articles = getSection(section)
-# dictionaryofvalues = getDictionary(articles)
-# listofarticles = sortDatesPublishedDates(dictionaryofvalues)
-# # Take the results of each of the dictionary and output it into a dictionary of 10 results
-# # print(test2)
-#
-# toptenarticles = listofarticles[:10]
-# listofclassarticles = []
-# for x in toptenarticles:
-#     print(article(x))
-#     listofclassarticles.append(article(x))
-#
-# print(listofclassarticles)
-# # print(pretty(toptenarticles))
-# f = open("breakingnews.html", "w")
-# parameters = {"section": section, "articles": listofclassarticles}
-# template = JINJA_ENVIRONMENT.get_template('template.html')
-# f.write(template.render(parameters))
-#
-# Create a class that handles the results and prints the results in to an HTML
-# #
+
+# This class is the main handler where the first welcome screen
 class Mainhandler(webapp2.RequestHandler):
     def get(self):
         logging.info("In MainHandler")
@@ -159,12 +136,15 @@ class Mainhandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('welcome.html')
         self.response.write(template.render(values))
 
+
+# This class that handles the results and prints the results in to an HTML page
 class respondHandler(webapp2.RequestHandler):
     def post(self):
         values={}
         section = self.request.get("section")
         if section:
             values["section"] = section
+            #Takes into account capitalization and
             section = self.request.get("section").lower().replace(" ","")
 
             articles = getSection(section)
@@ -184,6 +164,7 @@ class respondHandler(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('welcome.html')
             self.response.write(template.render(values))
 
+# Runs the program on app engine
 application = webapp2.WSGIApplication([ \
                                       ('/gresponse', respondHandler),
                                       ('/.*', Mainhandler)
