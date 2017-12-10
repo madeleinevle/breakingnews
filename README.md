@@ -1,6 +1,6 @@
 # BreakingNews
 
-An application that takes in a section from the New York Times and fetches the top ten most recently published stories from that section in New York Times
+An application that takes in a section from the New York Times and fetches the top ten most recently published stories from that section in New York Times. This project was created as the final project for my Interactive Systems Design and Technology class.
 
 ## Demo
 
