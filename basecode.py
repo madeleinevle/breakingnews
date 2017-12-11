@@ -4,13 +4,13 @@ from urllib import urlencode
 import json, jinja2, os, webapp2
 import logging
 
-top_stories_api_key = "Add your code here"
+top_stories_api_key = "4ed4f3c70d424ee0bb3c83e2e95374ef"
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
                                         extensions=['jinja2.ext.autoescape'],
                                         autoescape=True)
 
-# Makes the JSON file pretty and readable
+# Makes the JSON file pretty
 def pretty(obj):
     return json.dumps(obj, sort_keys=True, indent=2)
 
@@ -21,6 +21,9 @@ def getSection(section, params={"api-key": top_stories_api_key}):
         baseurl = "https://api.nytimes.com/svc/topstories/v2/"
         format = "json"
         encoded = urlencode(params)
+        if section == "theupshot":
+            section = "upshot"
+
         url = baseurl + section + "." + format + "?" + encoded
         loadTopStories = urllib2.urlopen(url).read()
         loadJsonofTopStories = json.loads(loadTopStories)
@@ -144,22 +147,28 @@ class respondHandler(webapp2.RequestHandler):
         section = self.request.get("section")
         if section:
             values["section"] = section
-            #Takes into account capitalization and
-            section = self.request.get("section").lower().replace(" ","")
+            # Takes into account capitalization and spacing
+            section = self.request.get("section").lower().replace(" ", "")
+            if section != "home" or "opinion" or "world" or "national" or "politics" or "upshot" or "nyregion" or "business" \
+                or "technology" or "science" or "health" or "sports" or "arts" or "books" or "movies" or "theater" or "sundayreview"\
+                or "fashion" or "tmagazine" or "food" or "travel" or "magazine" or "realestate" or "automobiles" or "obituaries"\
+                or "insider":
+                template = JINJA_ENVIRONMENT.get_template('error.html')
+                self.response.write(template.render(values))
+            else:
+                articles = getSection(section)
+                dictionaryofvalues = getDictionary(articles)
 
-            articles = getSection(section)
-            dictionaryofvalues = getDictionary(articles)
+                listofarticles = sortDatesPublishedDates(dictionaryofvalues)
+                toptenarticles = listofarticles[:10]
+                listofclassarticles = []
+                for x in toptenarticles:
+                    # print(article(x))
+                    listofclassarticles.append(article(x))
+                values["articles"] = listofclassarticles
 
-            listofarticles = sortDatesPublishedDates(dictionaryofvalues)
-            toptenarticles = listofarticles[:10]
-            listofclassarticles = []
-            for x in toptenarticles:
-                #print(article(x))
-                listofclassarticles.append(article(x))
-            values["articles"] = listofclassarticles
-
-            template = JINJA_ENVIRONMENT.get_template('template.html')
-            self.response.write(template.render(values))
+                template = JINJA_ENVIRONMENT.get_template('template.html')
+                self.response.write(template.render(values))
         else:
             template = JINJA_ENVIRONMENT.get_template('welcome.html')
             self.response.write(template.render(values))
