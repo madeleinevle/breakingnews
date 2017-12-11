@@ -149,26 +149,20 @@ class respondHandler(webapp2.RequestHandler):
             values["section"] = section
             # Takes into account capitalization and spacing
             section = self.request.get("section").lower().replace(" ", "")
-            if section != "home" or "opinion" or "world" or "national" or "politics" or "upshot" or "nyregion" or "business" \
-                or "technology" or "science" or "health" or "sports" or "arts" or "books" or "movies" or "theater" or "sundayreview"\
-                or "fashion" or "tmagazine" or "food" or "travel" or "magazine" or "realestate" or "automobiles" or "obituaries"\
-                or "insider":
-                template = JINJA_ENVIRONMENT.get_template('error.html')
-                self.response.write(template.render(values))
-            else:
-                articles = getSection(section)
-                dictionaryofvalues = getDictionary(articles)
 
-                listofarticles = sortDatesPublishedDates(dictionaryofvalues)
-                toptenarticles = listofarticles[:10]
-                listofclassarticles = []
-                for x in toptenarticles:
-                    # print(article(x))
-                    listofclassarticles.append(article(x))
-                values["articles"] = listofclassarticles
+            articles = getSection(section)
+            dictionaryofvalues = getDictionary(articles)
 
-                template = JINJA_ENVIRONMENT.get_template('template.html')
-                self.response.write(template.render(values))
+            listofarticles = sortDatesPublishedDates(dictionaryofvalues)
+            toptenarticles = listofarticles[:10]
+            listofclassarticles = []
+            for x in toptenarticles:
+                # print(article(x))
+                listofclassarticles.append(article(x))
+            values["articles"] = listofclassarticles
+
+            template = JINJA_ENVIRONMENT.get_template('template.html')
+            self.response.write(template.render(values))
         else:
             template = JINJA_ENVIRONMENT.get_template('welcome.html')
             self.response.write(template.render(values))
