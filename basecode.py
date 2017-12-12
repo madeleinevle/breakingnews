@@ -4,7 +4,7 @@ from urllib import urlencode
 import json, jinja2, os, webapp2
 import logging
 
-top_stories_api_key = "Insert The New York Times Top Stories API Key here"
+top_stories_api_key = "4ed4f3c70d424ee0bb3c83e2e95374ef"
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
                                         extensions=['jinja2.ext.autoescape'],
@@ -31,6 +31,8 @@ def getSection(section, params={"api-key": top_stories_api_key}):
             section = "fashion"
         if section == "timesinsider":
             section = "insider"
+        if section == "theatre":
+            section = "theater"
 
         url = baseurl + section + "." + format + "?" + encoded
         loadTopStories = urllib2.urlopen(url).read()
