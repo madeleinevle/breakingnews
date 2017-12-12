@@ -3,7 +3,7 @@
 An application that takes in a section from the New York Times and fetches the top ten most recently published stories from that section in New York Times. This project was created as the final project for my Interactive Systems Design and Technology class.
 
 ## Demo
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Lgo4ooPLYJo" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> 
+https://youtu.be/Lgo4ooPLYJo
 
 ## Try it out!
 https://breakingnews-188318.appspot.com/ 
