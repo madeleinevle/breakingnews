@@ -10,7 +10,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.di
                                         extensions=['jinja2.ext.autoescape'],
                                         autoescape=True)
 
-# Makes the JSON file pretty
+# Makes the JSON file pretty and easy to read
 def pretty(obj):
     return json.dumps(obj, sort_keys=True, indent=2)
 
@@ -21,14 +21,17 @@ def getSection(section, params={"api-key": top_stories_api_key}):
         baseurl = "https://api.nytimes.com/svc/topstories/v2/"
         format = "json"
         encoded = urlencode(params)
+
+        # Takes into account different spellings
         if section == "theupshot":
             section = "upshot"
-        if section == "ny" or section == "newyork":
+        if section == "ny" or section == "newyork" or section == "n.y.":
             section = "nyregion"
         if section == "style" or section == "fashionandstyle" or section == "fashion&style":
             section = "fashion"
         if section == "timesinsider":
             section = "insider"
+
         url = baseurl + section + "." + format + "?" + encoded
         loadTopStories = urllib2.urlopen(url).read()
         loadJsonofTopStories = json.loads(loadTopStories)
@@ -91,12 +94,13 @@ def sortDatesPublishedDates(dictionary):
     return sortedList
 
 
-# This function takes the dictionary that has been previously created, sorts based on published dates and returns a list
+# This function takes the dictionary that has been previously created, sorts based on published dates and returns a list of sorted articles
+# with the most recently published article first
 def sortDatesUpdatedDates(dictionary):
     newlist = []
     for article in dictionary:
         # print(article)
-        newlist.append(dictionary[article]["updated-date"])
+        newlist.append(dictionary[article]["published-date"])
     sortedList = sorted(newlist, key=lambda article: (
     article["year"], article["month"], article["day"], article["hour"], article["minutes"], article["seconds"],),
     reverse=True)
