@@ -25,6 +25,10 @@ def getSection(section, params={"api-key": top_stories_api_key}):
             section = "upshot"
         if section == "ny" or section == "newyork":
             section = "nyregion"
+        if section == "style" or section == "fashionandstyle" or section == "fashion&style":
+            section = "fashion"
+        if section == "timesinsider":
+            section = "insider"
         url = baseurl + section + "." + format + "?" + encoded
         loadTopStories = urllib2.urlopen(url).read()
         loadJsonofTopStories = json.loads(loadTopStories)
