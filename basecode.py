@@ -25,7 +25,7 @@ def getSection(section, params={"api-key": top_stories_api_key}):
         # Takes into account different spellings
         if section == "theupshot":
             section = "upshot"
-        if section == "ny" or section == "newyork" or section == "n.y.":
+        if section == "ny" or section == "newyork" or section == "n.y." or section == "n.y":
             section = "nyregion"
         if section == "style" or section == "fashionandstyle" or section == "fashion&style":
             section = "fashion"
