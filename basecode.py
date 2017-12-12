@@ -149,7 +149,6 @@ class respondHandler(webapp2.RequestHandler):
             values["section"] = section
             # Takes into account capitalization and spacing
             section = self.request.get("section").lower().replace(" ", "")
-
             articles = getSection(section)
             dictionaryofvalues = getDictionary(articles)
 
@@ -163,6 +162,7 @@ class respondHandler(webapp2.RequestHandler):
 
             template = JINJA_ENVIRONMENT.get_template('template.html')
             self.response.write(template.render(values))
+
         else:
             template = JINJA_ENVIRONMENT.get_template('welcome.html')
             self.response.write(template.render(values))
