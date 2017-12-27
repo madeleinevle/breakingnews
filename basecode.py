@@ -4,7 +4,7 @@ from urllib import urlencode
 import json, jinja2, os, webapp2
 import logging
 
-top_stories_api_key = "Insert Key Here"
+top_stories_api_key = "Insert Top Stories Key Here"
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
                                         extensions=['jinja2.ext.autoescape'],
